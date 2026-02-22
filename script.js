@@ -105,3 +105,37 @@ const camera = new Camera(video, {
 });
 
 camera.start();
+// ----------- Voice Commands Jarvis Mode -----------
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+recognition.continuous = true;
+recognition.lang = 'en-US';
+recognition.interimResults = false;
+
+recognition.onresult = (event) => {
+    const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+    console.log("Heard:", transcript);
+
+    if (transcript.includes("start drawing")) {
+        modeText.textContent = "DRAWING";
+    } else if (transcript.includes("stop drawing")) {
+        modeText.textContent = "IDLE";
+    } else if (transcript.includes("clear canvas")) {
+        drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+    } else if (transcript.includes("change color")) {
+        // Cycle colors
+        const colors = ["red", "white", "purple", "green"];
+        let currentIndex = colors.indexOf(currentColor);
+        currentColor = colors[(currentIndex + 1) % colors.length];
+        colorBox.style.background = currentColor;
+    }
+};
+
+// Start voice recognition automatically
+recognition.start();
+
+// Handle errors
+recognition.onerror = (event) => {
+    console.log("Speech recognition error:", event.error);
+};
