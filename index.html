@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRON CANVAS AI - Red HUD</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Iron Canvas Pro Web</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="hud">
-        <div class="title">IRON CANVAS AI</div>
-        <div class="status">STATUS: <span id="mode">IDLE</span></div>
-        <div class="color-indicator" id="colorBox"></div>
-    </div>
+<video id="cam" autoplay muted playsinline></video>
+<canvas id="drawCanvas"></canvas>
 
-    <video id="video" autoplay playsinline></video>
-    <canvas id="canvas"></canvas>
-    <canvas id="drawCanvas"></canvas>
+<!-- HUD -->
+<div id="hud">
+  <div id="modeText">IDLE</div>
+  <div id="colorBox"></div>
+</div>
 
-    <!-- MediaPipe CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-    <script src="script.js"></script>
+<!-- MediaPipe Hands -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.min.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>
