@@ -1,6 +1,27 @@
 const videoElement = document.getElementById('cam');
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
+let model;
+cocoSsd.load().then(m => { model = m; });
+
+async function detectObjects() {
+    if(!model) return;
+    const predictions = await model.detect(videoElement);
+    predictions.forEach(pred => {
+        const [x,y,w,h] = pred.bbox;
+        ctx.strokeStyle = 'lime';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x,y,w,h);
+        ctx.fillStyle = 'lime';
+        ctx.font = '16px monospace';
+        ctx.fillText(pred.class, x, y-5);
+
+        // Reaction: AI talks when a person is seen
+        if(pred.class === 'person'){
+            speak("I see a person!");
+        }
+    });
+}
 const colorBox = document.getElementById('colorBox');
 const modeText = document.getElementById('modeText');
 
@@ -120,8 +141,17 @@ recognition.onresult = (event)=>{
 recognition.start();
 
 // ----------------- TTS -----------------
-function speak(text){
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.rate = 1.0;
-  speechSynthesis.speak(utter);
+hands.onResults(results => {
+    // 1️⃣ Clear previous frame
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // 2️⃣ Hand tracking + drawing code
+    if(results.multiHandLandmarks) {
+        const landmarks = results.multiHandLandmarks[0];
+        // ... your existing drawing code here ...
+    }
+
+    // 3️⃣ Detect objects in the same frame
+    detectObjects();
+});
 }
